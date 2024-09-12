@@ -1,0 +1,2 @@
+Comanda de compilare
+g++ -std=c++17 main.cpp -lcpprest -lboost_system -lssl -lcrypto -o server_program
