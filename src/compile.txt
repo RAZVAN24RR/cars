@@ -1,2 +1,4 @@
 Comanda de compilare
-g++ -std=c++17 main.cpp -lcpprest -lboost_system -lssl -lcrypto -o server_program
+g++ -std=c++17 main.cpp db_connection/db_connection.cpp -lcpprest -lboost_system -lssl -lcrypto -lmysqlclient -o server_program
+
+

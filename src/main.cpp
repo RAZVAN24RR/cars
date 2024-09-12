@@ -1,5 +1,7 @@
 #include <cpprest/http_listener.h>
 #include <cpprest/json.h>
+#include "db_connection/db_connection.h"
+
 
 using namespace web;
 using namespace web::http;
@@ -10,6 +12,11 @@ void handle_get(http_request request) {
     json::value response_data;
     response_data[U("message")] = json::value::string(U("Hello, World!"));
 
+    MYSQL *conn;
+    if (connect_to_database(conn)){
+        std::cout<<"Connected";
+    }
+    close_database_connection(conn);
     request.reply(status_codes::OK, response_data);
 }
 
