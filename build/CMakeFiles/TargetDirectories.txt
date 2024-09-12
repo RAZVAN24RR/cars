@@ -1,0 +1,3 @@
+/home/razvan/Desktop/Nokia/CARS/cars/build/CMakeFiles/main.dir
+/home/razvan/Desktop/Nokia/CARS/cars/build/CMakeFiles/edit_cache.dir
+/home/razvan/Desktop/Nokia/CARS/cars/build/CMakeFiles/rebuild_cache.dir
