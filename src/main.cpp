@@ -18,6 +18,7 @@ int main() {
 
     listener.support(methods::POST, std::bind(&CarController::create_car, &car_controller, std::placeholders::_1));
   
+    listener.support(methods::GET, std::bind(&CarController::get_all_cars, &car_controller, std::placeholders::_1));
 
     try {
         listener

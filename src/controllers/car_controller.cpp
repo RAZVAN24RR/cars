@@ -9,7 +9,7 @@ void CarController::create_car(web::http::http_request request) {
     
     request.extract_json().then([=](json::value json_data) {
         if (!json_data.is_null()) {
-            
+
             std::string make = json_data[U("make")].as_string();
             std::string model = json_data[U("model")].as_string();
             int year = json_data[U("year")].as_integer();
@@ -29,4 +29,13 @@ void CarController::create_car(web::http::http_request request) {
     }).wait();
 }
 
+void CarController::get_all_cars(web::http::http_request request){
+    ucout<< "Trimit prin GET toate vehiculele\n";
+
+    CarService car_service;
+    web::json::value cars_json = car_service.get_all_cars();
+
+    request.reply(web::http::status_codes::OK, cars_json);
+
+}
 
