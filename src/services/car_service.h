@@ -12,6 +12,7 @@ public:
     std::vector<CarDTO>  get_all_cars();
     CarDTO get_car_by_id(int car_id);
     bool delete_car_by_id(int car_id);
+    bool update_car_year_by_id(int car_id, int new_year);
 };
 
 #endif // CAR_SERVICE_H

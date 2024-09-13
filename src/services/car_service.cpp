@@ -96,3 +96,21 @@ bool CarService::delete_car_by_id(int car_id) {
     }
     return success;
 }
+bool CarService::update_car_year_by_id(int car_id, int new_year) {
+    MYSQL *conn;
+    bool success = false;
+
+    if (connect_to_database(conn)) {
+        std::string query = "UPDATE car SET year = " + std::to_string(new_year) + " WHERE id = " + std::to_string(car_id);
+        if (mysql_query(conn, query.c_str())) {
+            std::cerr << "Failed to update car year: " << mysql_error(conn) << std::endl;
+        } else {
+            if (mysql_affected_rows(conn) > 0) {
+                success = true;
+            }
+        }
+        close_database_connection(conn);
+    }
+
+    return success;
+}

@@ -52,6 +52,21 @@ int main() {
         }
     });
 
+     listener.support(methods::PUT, [&](http_request request) {
+        auto path = uri::split_path(uri::decode(request.relative_uri().path()));
+
+        if (path.size() == 1) {
+            try {
+                int car_id = std::stoi(path[0]);
+                car_controller.update_car_year_by_id(request, car_id);
+            } catch (const std::exception &e) {
+                request.reply(status_codes::BadRequest, U("Invalid ID format"));
+            }
+        } else {
+            request.reply(status_codes::BadRequest, U("Invalid request path"));
+        }
+    });
+
     try {
         listener
             .open()

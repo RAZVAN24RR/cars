@@ -87,3 +87,25 @@ void CarController::delete_car_by_id(web::http::http_request request, int car_id
         request.reply(web::http::status_codes::NotFound, U("Car not found") );
     }
 }
+
+void CarController::update_car_year_by_id(web::http::http_request request, int car_id){
+    ucout << "Received action to update car year with ID: " << car_id << "\n";
+
+   request.extract_json().then([=](web::json::value json_data) {
+        if (!json_data.is_null() && json_data.has_field(U("year"))) {
+            int new_year = json_data[U("year")].as_integer();
+
+            CarService car_service;
+            
+            bool success = car_service.update_car_year_by_id(car_id, new_year);
+
+            if (success) {
+                request.reply(web::http::status_codes::OK, U("Car year updated successfully"));
+            } else {
+                request.reply(web::http::status_codes::NotFound, U("Car not found"));
+            }
+        } else {
+            request.reply(web::http::status_codes::BadRequest, U("Invalid JSON or missing 'year' field"));
+        }
+    }).wait();
+}

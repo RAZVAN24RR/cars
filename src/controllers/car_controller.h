@@ -14,6 +14,7 @@ class CarController{
     void get_all_cars(web::http::http_request request);
     void get_car_by_id(web::http::http_request request, int car_id);
     void delete_car_by_id(web::http::http_request request, int car_id);
+    void update_car_year_by_id(web::http::http_request request, int car_id);
 };
 
 
