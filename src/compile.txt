@@ -1,4 +1,5 @@
 Comanda de compilare
-g++ -std=c++17 main.cpp db_connection/db_connection.cpp -lcpprest -lboost_system -lssl -lcrypto -lmysqlclient -o server_program
+g++ -std=c++17 main.cpp db_connection/db_connection.cpp controllers/car_controller.cpp services/car_service.cpp -lcpprest -lboost_system -lssl -lcrypto -lmysqlclient -o server_program
+
 
 
