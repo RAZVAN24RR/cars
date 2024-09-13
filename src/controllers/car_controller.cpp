@@ -55,3 +55,21 @@ void CarController::get_all_cars(web::http::http_request request){
 
 }
 
+void CarController::get_car_by_id(web::http::http_request request, int car_id) {
+    ucout << "Received GET request for car with ID: " << car_id << "\n";
+
+    CarService car_service;
+    CarDTO car = car_service.get_car_by_id(car_id);
+
+    if (car.get_id() != -1) {
+        web::json::value car_json;
+        car_json[U("id")] = web::json::value::number(car.get_id());
+        car_json[U("make")] = web::json::value::string(car.get_make());
+        car_json[U("model")] = web::json::value::string(car.get_model());
+        car_json[U("year")] = web::json::value::number(car.get_year());
+
+        request.reply(web::http::status_codes::OK, car_json);
+    } else {
+        request.reply(web::http::status_codes::NotFound, U("Car not found"));
+    }
+}

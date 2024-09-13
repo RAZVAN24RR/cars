@@ -10,6 +10,7 @@ using namespace web::http::experimental::listener;
 
 
 int main() {
+   // Listener pentru ambele rute: /api/cars și /api/cars/{id}
     uri_builder uri(U("http://localhost:3001/api/cars"));
     auto addr = uri.to_uri().to_string();
     http_listener listener(addr);
@@ -17,8 +18,24 @@ int main() {
     CarController car_controller;
 
     listener.support(methods::POST, std::bind(&CarController::create_car, &car_controller, std::placeholders::_1));
-  
-    listener.support(methods::GET, std::bind(&CarController::get_all_cars, &car_controller, std::placeholders::_1));
+
+     listener.support(methods::GET, [&](http_request request) {
+        auto path = uri::split_path(uri::decode(request.relative_uri().path()));
+
+        if (path.empty()) {
+            car_controller.get_all_cars(request);
+        } 
+        else if (path.size() == 1) {
+            try {
+                int car_id = std::stoi(path[0]);
+                car_controller.get_car_by_id(request, car_id);
+            } catch (const std::exception &e) {
+                request.reply(status_codes::BadRequest, U("Invalid ID format"));
+            }
+        } else {
+            request.reply(status_codes::BadRequest, U("Invalid request path"));
+        }
+    });
 
     try {
         listener

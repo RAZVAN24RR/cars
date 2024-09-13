@@ -12,6 +12,7 @@ class CarController{
     CarController();
     void create_car(web::http::http_request request);
     void get_all_cars(web::http::http_request request);
+    void get_car_by_id(web::http::http_request request, int car_id);
 };
 
 
