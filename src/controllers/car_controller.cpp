@@ -73,3 +73,17 @@ void CarController::get_car_by_id(web::http::http_request request, int car_id) {
         request.reply(web::http::status_codes::NotFound, U("Car not found"));
     }
 }
+
+void CarController::delete_car_by_id(web::http::http_request request, int car_id){
+    ucout << "Delete car with ID: " << car_id << "\n";
+
+    CarService car_service;
+    bool success = car_service.delete_car_by_id(car_id);
+
+    if(success){
+        request.reply(web::http::status_codes::OK, U("Car deleted successfully"));
+
+    }else {
+        request.reply(web::http::status_codes::NotFound, U("Car not found") );
+    }
+}

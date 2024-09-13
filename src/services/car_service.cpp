@@ -78,3 +78,21 @@ CarDTO CarService::get_car_by_id(int car_id) {
 
     return car;
 }
+
+bool CarService::delete_car_by_id(int car_id) {
+    MYSQL *conn;
+    bool success = false;
+
+    if(connect_to_database(conn)){
+        std::string query = "DELETE FROM car WHERE id = " + std::to_string(car_id);
+        if(mysql_query(conn, query.c_str())){
+            std::cerr << "Failed to delete car: " << mysql_error(conn) << std::endl;
+        }else {
+            if(mysql_affected_rows(conn) > 0) {
+                success = true;
+            }
+        }
+        close_database_connection(conn);
+    }
+    return success;
+}
