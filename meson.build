@@ -15,7 +15,7 @@ executable('cars',
     'src/db_connection/db_connection.cpp', 
     'src/controllers/car_controller.cpp', 
     'src/services/car_service.cpp', 
-    'src/models/car_model.cpp'
+    'src/models/car_dto.cpp'
   ],
   include_directories : inc_dirs,  # Include directoarele cu fișiere .h
   dependencies : [mysqlclient_dep, cpprestsdk_dep, openssl_dep],

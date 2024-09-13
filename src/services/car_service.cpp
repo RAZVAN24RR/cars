@@ -1,7 +1,10 @@
 #include "car_service.h"
+#include "car_dto.h"
 #include "../db_connection/db_connection.h"
 #include <iostream>
 #include <cpprest/json.h>
+#include <vector>
+
 
 
 bool CarService::insert_car(const std::string &make, const std::string &model, int year) {
@@ -21,8 +24,8 @@ bool CarService::insert_car(const std::string &make, const std::string &model, i
     return false;
 }
 
-web::json::value CarService::get_all_cars() {
-    web::json::value cars_json = web::json::value::array(); 
+std::vector<CarDTO>  CarService::get_all_cars() {
+    std::vector<CarDTO> cars;
     MYSQL *conn;
 
     if (connect_to_database(conn)) {
@@ -33,22 +36,16 @@ web::json::value CarService::get_all_cars() {
         } else {
             MYSQL_RES *res = mysql_store_result(conn); 
             MYSQL_ROW row;
-            int index = 0;
 
-            while ((row = mysql_fetch_row(res))) {
-                web::json::value car_json;
-                car_json[U("id")] = web::json::value::number(std::stoi(row[0]));
-                car_json[U("make")] = web::json::value::string(row[1]);
-                car_json[U("model")] = web::json::value::string(row[2]);
-                car_json[U("year")] = web::json::value::number(std::stoi(row[3]));
-
-                cars_json[index] = car_json;
-                index++;
+            while((row = mysql_fetch_row(res))){
+                CarDTO car(std::stoi(row[0]), row[1], row[2], std::stoi(row[3]) );
+                cars.push_back(car);
             }
+
             mysql_free_result(res);
         }
         close_database_connection(conn);
     }
 
-    return cars_json;
+    return cars;
 }

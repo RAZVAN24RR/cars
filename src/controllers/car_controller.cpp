@@ -1,6 +1,9 @@
 #include "car_controller.h"
 #include "../services/car_service.h"
 #include <iostream>
+#include "car_dto.h"
+#include <cpprest/json.h>
+
 
 CarController::CarController() {}
 
@@ -33,7 +36,20 @@ void CarController::get_all_cars(web::http::http_request request){
     ucout<< "Trimit prin GET toate vehiculele\n";
 
     CarService car_service;
-    web::json::value cars_json = car_service.get_all_cars();
+    std::vector<CarDTO>  cars = car_service.get_all_cars();
+
+    web::json::value cars_json = web::json::value::array(); 
+    int index = 0;
+
+    for (const auto& car : cars) {
+        web::json::value car_json;
+        car_json[U("id")] = web::json::value::number(car.get_id());
+        car_json[U("make")] = web::json::value::string(car.get_make());
+        car_json[U("model")] = web::json::value::string(car.get_model());
+        car_json[U("year")] = web::json::value::number(car.get_year());
+
+        cars_json[index++] = car_json;
+    }
 
     request.reply(web::http::status_codes::OK, cars_json);
 
